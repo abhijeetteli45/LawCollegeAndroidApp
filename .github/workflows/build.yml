@@ -18,25 +18,22 @@ jobs:
       - name: Extract Android project
         run: |
           unzip -o LawCollegeAndroidApp-1.zip -d project
-          find project -name settings.gradle -exec dirname {} \; > project_dir.txt
-          PROJECT_DIR=$(head -n 1 project_dir.txt)
-          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+          test -f project/settings.gradle
 
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - uses: android-actions/setup-android@v3
-
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Build APK
         run: |
-          cd "$PROJECT_DIR"
+          cd project
           gradle assembleDebug
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
           name: LawCollegeManager-APK
-          path: project/**/app/build/outputs/apk/debug/app-debug.apk
+          path: project/app/build/outputs/apk/debug/app-debug.apk
