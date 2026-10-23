@@ -17,7 +17,7 @@ jobs:
 
       - name: Extract Android project
         run: |
-          unzip -o LawCollegeAndroidApp-1.zip -d project
+          unzip -o .github/workflows/LawCollegeAndroidApp-fixed.zip -d project
           test -f project/settings.gradle
 
       - uses: actions/setup-java@v4
